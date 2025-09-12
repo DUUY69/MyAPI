@@ -1,0 +1,43 @@
+### Test API endpoints
+
+### Get all users
+GET https://localhost:7024/api/user
+Accept: application/json
+
+### Get user by ID
+GET https://localhost:7024/api/user/1
+Accept: application/json
+
+### Add new user
+POST https://localhost:7024/api/user/add
+Content-Type: application/json
+
+{
+  "fullName": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+
+### Update user
+PUT https://localhost:7024/api/user/update
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "fullName": "John Smith",
+  "email": "john.smith@example.com",
+  "isActive": true
+}
+
+### Login user
+POST https://localhost:7024/api/user/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+
+### Delete user
+DELETE https://localhost:7024/api/user/1
+Accept: application/json
