@@ -43,11 +43,7 @@ builder.Services.AddDbContext<MyAPIContext>((optionBuilder) =>
     optionBuilder.UseSqlServer(cnnString);
 });
 
-// Register Repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// Register Services
-builder.Services.AddScoped<IUserService, UserService>();
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -82,4 +78,3 @@ app.UseCors("AllowFrontend");
 
 app.MapControllers();
 
-await app.RunAsync();
