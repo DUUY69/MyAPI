@@ -38,11 +38,22 @@ builder.Services.AddSingleton(appSettings);
 
 var cnnString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<MyAPIContext>((optionBuilder) =>
+builder.Services.AddDbContext<MyAPIContext>(options =>
 {
-    optionBuilder.UseSqlServer(cnnString);
+    options.UseSqlServer(
+        cnnString,
+        sql => sql.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        )
+    );
 });
+// Register Repositories
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
+// Register Services
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 
 // Add CORS
@@ -77,4 +88,6 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseCors("AllowFrontend");
 
 app.MapControllers();
+
+app.Run();
 
