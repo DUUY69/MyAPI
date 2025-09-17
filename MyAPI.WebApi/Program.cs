@@ -49,11 +49,35 @@ builder.Services.AddDbContext<MyAPIContext>(options =>
         )
     );
 });
-// Register Repositories
+// ========================================
+// DEPENDENCY INJECTION REGISTRATION
+// ========================================
+// Đăng ký các dependencies để DI container có thể inject vào các class
+
+// Register Repositories - Đăng ký Repository layer
+// AddScoped: Tạo instance mới cho mỗi HTTP request
+// Interface → Implementation mapping
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
-// Register Services
+// Register Services - Đăng ký Service layer  
+// AddScoped: Tạo instance mới cho mỗi HTTP request
+// Interface → Implementation mapping
 builder.Services.AddScoped<IStudentService, StudentService>();
+
+// ========================================
+// KHI TẠO API MỚI, THÊM CÁC DÒNG TƯƠNG TỰ:
+// ========================================
+// builder.Services.AddScoped<IProductRepository, ProductRepository>();
+// builder.Services.AddScoped<IProductService, ProductService>();
+// builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+// builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+// ========================================
+// CÁC LIFETIME OPTIONS:
+// ========================================
+// AddSingleton: Tạo 1 instance duy nhất cho toàn bộ application
+// AddScoped: Tạo 1 instance cho mỗi HTTP request (thường dùng cho Repository/Service)
+// AddTransient: Tạo instance mới mỗi lần được inject (ít dùng)
 
 
 // Add CORS
