@@ -24,76 +24,77 @@ namespace MyAPI.WebApi.Controllers
         // Constructor - DI container sẽ tự động inject IStudentService implementation
         public StudentController(IStudentService svc) { _svc = svc; }
 
-        // ========================================
-        // GET ALL - Lấy tất cả records
-        // ========================================
-        // [HttpGet("GetAllStudent")] - Route: GET /api/Student/GetAllStudent
+        /// <summary>
+        /// Lấy danh sách tất cả sinh viên
+        /// </summary>
+        /// <returns>Danh sách tất cả sinh viên</returns>
+        /// <response code="200">Trả về danh sách sinh viên thành công</response>
         [HttpGet("GetAllStudent")]
-        public async Task<IActionResult> GetAllStudent() // async Task cho phép xử lý bất đồng bộ
+        public async Task<IActionResult> GetAllStudent()
         {
-            // Gọi Service layer để lấy dữ liệu
             var students = await _svc.GetAllAsync();
-            // Trả về HTTP 200 OK với dữ liệu
             return Ok(students);
         }
 
-        // ========================================
-        // GET BY ID - Lấy record theo ID
-        // ========================================
-        // [HttpGet("GetByMssv")] - Route: GET /api/Student/GetByMssv?mssv=SE182073
+        /// <summary>
+        /// Lấy thông tin sinh viên theo MSSV
+        /// </summary>
+        /// <param name="mssv">Mã số sinh viên (ví dụ: SE182073)</param>
+        /// <returns>Thông tin sinh viên</returns>
+        /// <response code="200">Trả về thông tin sinh viên thành công</response>
+        /// <response code="404">Không tìm thấy sinh viên với MSSV đã cho</response>
         [HttpGet("GetByMssv")]
-        public async Task<IActionResult> GetByMssv(string mssv) // Parameter từ query string
+        public async Task<IActionResult> GetByMssv(string mssv)
         {
-            // Gọi Service để lấy student theo MSSV
             var s = await _svc.GetByIdAsync(mssv);
-            // Nếu không tìm thấy trả về 404, nếu có trả về 200 với dữ liệu
             return s == null ? NotFound() : Ok(s);
         }
 
-        // ========================================
-        // CREATE - Tạo record mới
-        // ========================================
-        // [HttpPost("Create")] - Route: POST /api/Student/Create
-        [HttpPost("Create")] // Tạo mới
-        public async Task<IActionResult> Create([FromBody] AddStudentRequest req) // [FromBody] lấy data từ request body
+        /// <summary>
+        /// Tạo sinh viên mới
+        /// </summary>
+        /// <param name="req">Thông tin sinh viên cần tạo</param>
+        /// <returns>Thông tin sinh viên đã được tạo</returns>
+        /// <response code="201">Tạo sinh viên thành công</response>
+        /// <response code="400">Dữ liệu đầu vào không hợp lệ</response>
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromBody] AddStudentRequest req)
         {
-            // Validation - kiểm tra dữ liệu đầu vào
             if (string.IsNullOrWhiteSpace(req.Mssv) || string.IsNullOrWhiteSpace(req.Name))
-                return BadRequest("Mssv và Name là bắt buộc."); // Trả về HTTP 400 Bad Request
+                return BadRequest("Mssv và Name là bắt buộc.");
 
-            // Gọi Service để tạo student mới
             var created = await _svc.AddStudentAsync(req);
-            // Trả về HTTP 201 Created với location header
             return CreatedAtAction(nameof(GetByMssv), new { mssv = created.Mssv }, created);
         }
 
-        // ========================================
-        // UPDATE - Cập nhật record
-        // ========================================
-        // [HttpPut("Update")] - Route: PUT /api/Student/Update
-        [HttpPut("Update")] // Cập nhật
+        /// <summary>
+        /// Cập nhật thông tin sinh viên
+        /// </summary>
+        /// <param name="req">Thông tin sinh viên cần cập nhật</param>
+        /// <returns>Thông tin sinh viên đã được cập nhật</returns>
+        /// <response code="200">Cập nhật sinh viên thành công</response>
+        /// <response code="400">Dữ liệu đầu vào không hợp lệ</response>
+        /// <response code="404">Không tìm thấy sinh viên cần cập nhật</response>
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateStudentRequest req)
         {
-            // Validation
             if (string.IsNullOrWhiteSpace(req.Mssv))
                 return BadRequest("Mssv là bắt buộc.");
 
-            // Gọi Service để cập nhật
             var updated = await _svc.UpdateStudentAsync(req);
-            // Nếu không tìm thấy trả về 404, nếu thành công trả về 200
             return updated == null ? NotFound() : Ok(updated);
         }
 
-        // ========================================
-        // DELETE - Xóa record
-        // ========================================
-        // [HttpDelete("Delete")] - Route: DELETE /api/Student/Delete?mssv=SE182073
-        [HttpDelete("Delete")] // Xóa
+        /// <summary>
+        /// Xóa sinh viên theo MSSV
+        /// </summary>
+        /// <param name="mssv">Mã số sinh viên cần xóa</param>
+        /// <returns>Không có nội dung trả về</returns>
+        /// <response code="204">Xóa sinh viên thành công</response>
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(string mssv)
         {
-            // Gọi Service để xóa
             await _svc.DeleteStudentAsync(mssv);
-            // Trả về HTTP 204 No Content (thành công nhưng không có dữ liệu trả về)
             return NoContent();
         }
         
