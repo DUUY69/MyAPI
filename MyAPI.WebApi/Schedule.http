@@ -1,0 +1,61 @@
+### Schedule API Testing - Simple Version
+
+# Base URL
+@baseUrl = https://localhost:7024/api/Schedule
+
+### 1. Get All Schedules
+GET {{baseUrl}}/GetAllSchedule
+Content-Type: application/json
+
+### 2. Get Schedule by ID
+GET {{baseUrl}}/GetById?id=1
+Content-Type: application/json
+
+### 3. Create New Schedule
+POST {{baseUrl}}/Create
+Content-Type: application/json
+
+{
+  "mssv": "SE182073",
+  "className": "SE1820",
+  "subjectName": "Advanced Programming",
+  "scheduleTime": "2024-12-15T08:00:00"
+}
+
+### 4. Update Schedule
+PUT {{baseUrl}}/Update
+Content-Type: application/json
+
+{
+  "id": 1,
+  "mssv": "SE182073",
+  "className": "SE1820",
+  "subjectName": "Advanced Programming - Updated",
+  "scheduleTime": "2024-12-15T09:00:00"
+}
+
+### 5. Delete Schedule
+DELETE {{baseUrl}}/Delete?id=1
+Content-Type: application/json
+
+### 6. Test with different MSSV
+POST {{baseUrl}}/Create
+Content-Type: application/json
+
+{
+  "mssv": "SE182074",
+  "className": "SE1821",
+  "subjectName": "Database Design",
+  "scheduleTime": "2024-12-16T10:00:00"
+}
+
+### 7. Test with different class
+POST {{baseUrl}}/Create
+Content-Type: application/json
+
+{
+  "mssv": "SE182073",
+  "className": "SE1822",
+  "subjectName": "Web Development",
+  "scheduleTime": "2024-12-17T14:00:00"
+}

@@ -20,11 +20,14 @@ MyAPI_Project/
 │   ├── Infrastructure/
 │   │   └── Repository.cs      ✅ Base repository pattern
 │   ├── Entities/
-│   │   ├── MyAPIContext.cs    ✅ DbContext (đã cấu hình User)
-│   │   └── User.cs            ✅ User entity
+│   │   ├── MyAPIContext.cs    ✅ DbContext (đã cấu hình Student & Schedule)
+│   │   ├── Student.cs         ✅ Student entity
+│   │   └── Schedule.cs        ✅ Schedule entity
 │   ├── Interfaces/
-│   │   └── IUserRepository.cs ✅ Repository interface
-│   └── UserRepository.cs      ✅ User repository implementation
+│   │   ├── IStudentRepository.cs ✅ Student repository interface
+│   │   └── IScheduleRepository.cs ✅ Schedule repository interface
+│   ├── StudentRepository.cs   ✅ Student repository implementation
+│   └── ScheduleRepository.cs  ✅ Schedule repository implementation
 ├── MyAPI.Services/            ✅ Business Logic Layer
 │   ├── MyAPI.Services.csproj
 │   ├── Common/
@@ -34,25 +37,31 @@ MyAPI_Project/
 │   │   ├── AppException.cs    ✅ Custom exception
 │   │   └── AppExceptions.cs   ✅ Exception factory
 │   ├── Interfaces/
-│   │   └── IUserService.cs    ✅ Service interface
+│   │   ├── IStudentService.cs ✅ Student service interface
+│   │   └── IScheduleService.cs ✅ Schedule service interface
 │   ├── Models/                ✅ DTOs
-│   │   ├── UserResponse.cs
-│   │   ├── AddUserRequest.cs
-│   │   ├── UpdateUserRequest.cs
-│   │   └── LoginUserRequest.cs
-│   └── UserService.cs         ✅ User service implementation
+│   │   ├── StudentResponse.cs
+│   │   ├── AddStudentRequest.cs
+│   │   ├── UpdateStudentRequest.cs
+│   │   ├── ScheduleResponse.cs
+│   │   ├── AddScheduleRequest.cs
+│   │   └── UpdateScheduleRequest.cs
+│   ├── StudentService.cs      ✅ Student service implementation
+│   └── ScheduleService.cs     ✅ Schedule service implementation
 └── MyAPI.WebApi/              ✅ Presentation Layer
     ├── MyAPI.WebApi.csproj
     ├── appsettings.json       ✅ Configuration
     ├── appsettings.Development.json
-    ├── MyAPI.WebApi.http      ✅ API testing file
+    ├── MyAPI.WebApi.http      ✅ Student API testing file
+    ├── Schedule.http           ✅ Schedule API testing file
     ├── Program.cs             ✅ Application startup
     ├── Properties/
     │   └── launchSettings.json ✅ Launch configuration
     ├── Middlewares/
     │   └── ErrorHandlerMiddleware.cs ✅ Error handling
     └── Controllers/
-        └── UserController.cs  ✅ User API endpoints
+        ├── StudentController.cs ✅ Student API endpoints
+        └── ScheduleController.cs ✅ Schedule API endpoints
 ```
 
 ## 🔧 **Các tính năng đã hoàn thành:**
@@ -64,17 +73,23 @@ MyAPI_Project/
 
 ### ✅ **Entity Framework Core**
 - DbContext đã cấu hình
-- User entity với đầy đủ properties
+- Student & Schedule entities với đầy đủ properties
 - Repository pattern implementation
 - EF Core Power Tools configuration
 
-### ✅ **API Endpoints**
-- `POST /api/user/login` - Đăng nhập
-- `GET /api/user/{id}` - Lấy user theo ID
-- `GET /api/user` - Lấy tất cả users
-- `POST /api/user/add` - Thêm user mới
-- `PUT /api/user/update` - Cập nhật user
-- `DELETE /api/user/{id}` - Xóa user
+### ✅ **Student API Endpoints**
+- `GET /api/Student` - Lấy tất cả students
+- `GET /api/Student/{mssv}` - Lấy student theo MSSV
+- `POST /api/Student` - Thêm student mới
+- `PUT /api/Student` - Cập nhật student
+- `DELETE /api/Student/{mssv}` - Xóa student
+
+### ✅ **Schedule API Endpoints (Simple Version)**
+- `GET /api/Schedule/GetAllSchedule` - Lấy tất cả schedules
+- `GET /api/Schedule/GetById?id=1` - Lấy schedule theo ID
+- `POST /api/Schedule/Create` - Thêm schedule mới
+- `PUT /api/Schedule/Update` - Cập nhật schedule
+- `DELETE /api/Schedule/Delete?id=1` - Xóa schedule
 
 ### ✅ **Bảo mật**
 - Password hashing với SHA256
@@ -138,6 +153,6 @@ Dự án đã hoàn toàn sẵn sàng để:
 - ✅ Chia sẻ với team
 
 ---
-**Tạo bởi**: AI Assistant  
+**Tạo bởi**: KoroKoroKoroKoro
 **Ngày tạo**: 12/09/2025  
 **Framework**: .NET 8.0 + Entity Framework Core 9.0.1

@@ -13,7 +13,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "MyAPI - Student & Schedule Management",
+        Version = "v1",
+        Description = "API quản lý sinh viên và lịch học",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "MyAPI Team",
+            Email = "contact@myapi.com"
+        }
+    });
+    
+    // Include XML comments
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        c.IncludeXmlComments(xmlPath);
+    }
+});
 
 // Start DI
 builder.Services.AddSingleton<IHashHelper, HashHelper>();
@@ -58,11 +79,13 @@ builder.Services.AddDbContext<MyAPIContext>(options =>
 // AddScoped: Tạo instance mới cho mỗi HTTP request
 // Interface → Implementation mapping
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
 // Register Services - Đăng ký Service layer  
 // AddScoped: Tạo instance mới cho mỗi HTTP request
 // Interface → Implementation mapping
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
 // ========================================
 // KHI TẠO API MỚI, THÊM CÁC DÒNG TƯƠNG TỰ:
